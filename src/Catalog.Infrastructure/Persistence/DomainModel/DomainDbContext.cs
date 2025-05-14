@@ -3,7 +3,6 @@ using Catalog.Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Joseco.DDD.Core.Abstractions;
 using Joseco.Outbox.Contracts.Model;
-using Joseco.Outbox.EFCore;
 using Joseco.Outbox.EFCore.Persistence;
 using System.Reflection;
 
@@ -16,11 +15,6 @@ internal class DomainDbContext(DbContextOptions<DomainDbContext> options) :
     public DbSet<Product> Product { get; set; }
     public DbSet<OutboxMessage<DomainEvent>> OutboxMessages { get; set; }
 
-    public DbSet<OutboxMessage<DomainEvent>> GetOutboxMessages()
-    {
-        Console.WriteLine("-------------------------> OutboxDB Context ID: " + ContextId);
-        return OutboxMessages;
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

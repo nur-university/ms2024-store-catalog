@@ -1,26 +1,18 @@
-﻿using Microsoft.Extensions.Primitives;
+﻿using Catalog.Application.Abstractions;
+using Microsoft.Extensions.Primitives;
 using Serilog.Context;
 
 namespace Catalog.WebApi.Middleware;
 
 public class RequestContextLoggingMiddleware(RequestDelegate next)
 {
-    private const string CorrelationIdHeaderName = "Correlation-Id";
 
-    public Task Invoke(HttpContext context)
+    public Task Invoke(HttpContext context, ICorrelationIdProvider correlationIdProvider)
     {
-        using (LogContext.PushProperty("CorrelationId", GetCorrelationId(context)))
+        using (LogContext.PushProperty("CorrelationId", correlationIdProvider.GetCorrelationId()))
         {
             return next.Invoke(context);
         }
     }
 
-    private static string GetCorrelationId(HttpContext context)
-    {
-        context.Request.Headers.TryGetValue(
-            CorrelationIdHeaderName,
-            out StringValues correlationId);
-
-        return correlationId.FirstOrDefault() ?? context.TraceIdentifier;
-    }
 }

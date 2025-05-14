@@ -1,4 +1,5 @@
 ﻿using Catalog.Application.Categories.CreateCategory;
+using Catalog.Application.Categories.GetCategories;
 using Catalog.WebApi.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,12 @@ public class CategoryController : CustomController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(Guid id)
     {
-        return Ok();
+        GetCategoryByIdQuery query = new GetCategoryByIdQuery()
+        {
+            CategoryId = id
+        };
+        var result = await _mediator.Send(query);
+        return BuildResult(result);
     }
 
     [HttpPost]

@@ -11,9 +11,11 @@ class PublishProductCreated(IExternalPublisher integrationBusService) : INotific
         Nur.Store2025.Integration.Catalog.ProductCreated message = new(
             notification.Content.ProductId,
             notification.Content.Name,
-            notification.Content.Description
+            notification.Content.Description,
+            notification.CorrelationId,
+            "catalog"
         );
 
-        await integrationBusService.PublishAsync(message);  
+        await integrationBusService.PublishAsync(message);
     }
 }
