@@ -21,10 +21,14 @@ public static class SecretExtensions
         bool useSecretManager = configuration.GetValue<bool>("UseSecretManager", false);
         if (environment.IsDevelopment() && !useSecretManager)
         {
+            string JwtOptionsSecretName = "JwtOptions";
+            string RabbitMqSettingsSecretName = "RabbitMqSettings";
+            string CatalogDatabaseConnectionStringSecretName = "CatalogDatabaseConnectionString";
+
             configuration
-                .LoadAndRegister<RabbitMqSettings>(services, "RabbitMqSettings")
-                .LoadAndRegister<DataBaseSettings>(services, "CatalogDatabaseConnectionString")
-                .LoadAndRegister<JwtOptions>(services, "JwtOptions");
+                .LoadAndRegister<RabbitMqSettings>(services, RabbitMqSettingsSecretName)
+                .LoadAndRegister<DataBaseSettings>(services, CatalogDatabaseConnectionStringSecretName)
+                .LoadAndRegister<JwtOptions>(services, JwtOptionsSecretName);
 
             return services;
         }

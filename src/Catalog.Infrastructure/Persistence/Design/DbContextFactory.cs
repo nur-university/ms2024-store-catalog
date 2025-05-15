@@ -8,34 +8,33 @@ using System.Threading.Tasks;
 using Catalog.Infrastructure.Persistence.StoredModel;
 using Microsoft.Extensions.Configuration;
 
-namespace Catalog.Infrastructure.Persistence.Design
+namespace Catalog.Infrastructure.Persistence.Design;
+
+internal class DbContextFactory : IDesignTimeDbContextFactory<StoredDbContext>
 {
-    internal class DbContextFactory : IDesignTimeDbContextFactory<StoredDbContext>
+    public StoredDbContext CreateDbContext(string[] args)
     {
-        public StoredDbContext CreateDbContext(string[] args)
-        {
-            var configuration = BuildConfiguration();
-            var connectionString = configuration.GetConnectionString("Database");
+        var configuration = BuildConfiguration();
+        var connectionString = configuration.GetConnectionString("Database");
 
-            var optionsBuilder = new DbContextOptionsBuilder<StoredDbContext>();
-            optionsBuilder.UseNpgsql(connectionString);
+        var optionsBuilder = new DbContextOptionsBuilder<StoredDbContext>();
+        optionsBuilder.UseNpgsql(connectionString);
 
-            return new StoredDbContext(optionsBuilder.Options);
-        }
+        return new StoredDbContext(optionsBuilder.Options);
+    }
 
-        private IConfiguration BuildConfiguration()
-        {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+    private IConfiguration BuildConfiguration()
+    {
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .AddEnvironmentVariables();
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .AddEnvironmentVariables();
 
-            // Aquí puedes agregar lógica condicional para consultar Vault si se requiere
+        // Aquí puedes agregar lógica condicional para consultar Vault si se requiere
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }

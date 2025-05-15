@@ -7,7 +7,7 @@ using Joseco.Outbox.EFCore;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddAplication()
-                .AddInfrastructure(builder.Environment);
+                .AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddOutboxBackgroundService<DomainEvent>();
 
 var host = builder.Build();
