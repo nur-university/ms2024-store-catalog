@@ -7,7 +7,7 @@
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
         "VAULT_URL": "http://localhost:8200",
-        "VAULT_TOKEN": ""
+        "VAULT_TOKEN": "vaultroot"
       }
     }
   }
