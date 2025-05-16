@@ -19,7 +19,6 @@ internal class StoredDbContext : DbContext, IDatabase
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        OutboxMessage<DomainEvent> outboxMessage;
         modelBuilder.AddOutboxModel<DomainEvent>();
     }
 

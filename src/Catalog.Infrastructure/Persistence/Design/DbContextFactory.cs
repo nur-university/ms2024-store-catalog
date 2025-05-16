@@ -15,7 +15,9 @@ internal class DbContextFactory : IDesignTimeDbContextFactory<StoredDbContext>
     public StoredDbContext CreateDbContext(string[] args)
     {
         var configuration = BuildConfiguration();
-        var connectionString = configuration.GetConnectionString("Database");
+        DataBaseSettings dataBaseSettings = new();
+        configuration.Bind("CatalogDatabaseConnectionString", dataBaseSettings);
+        var connectionString = dataBaseSettings.ConnectionString;
 
         var optionsBuilder = new DbContextOptionsBuilder<StoredDbContext>();
         optionsBuilder.UseNpgsql(connectionString);
